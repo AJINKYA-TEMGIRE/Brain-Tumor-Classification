@@ -1,0 +1,3 @@
+The data to be used can be taken from the kaggle itself: link given below to get the data
+
+https://www.kaggle.com/datasets/iashiqul/mri-image-based-brain-tumor-classification
