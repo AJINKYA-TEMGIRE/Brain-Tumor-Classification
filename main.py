@@ -27,8 +27,8 @@ def all(image):
 
     answer = classnames[np.argmax(model.predict(a))].upper()
 
-    if answer != "NOTUMOUR":
-        answer = answer + " TUMOUR"
+    if answer != "NOTUMOR":
+        answer = answer + " TUMOR"
 
 
     return  "THIS IS " +   answer + ", Probability: " + str(np.round(maxproba , 2))
