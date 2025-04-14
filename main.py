@@ -4,42 +4,42 @@ import numpy as np
 import cv2
 from tensorflow.keras.models import load_model
 
-
+# Load model
 model = load_model('BrainTumorClassificationModel.h5')
-
 classnames = ['glioma', 'meningioma', 'notumor', 'pituitary']
 
+st.header("🧠 Brain Tumor Classification")
 
-st.header("Brain Tumor Classification")
-
-file = st.file_uploader("Upload your MRI Image here in form of (jgg, png or jpeg) " , type = ['png' , 'jpg' , 'jpeg'])
+file = st.file_uploader("📤 Upload your MRI Image here (jpg, png, jpeg)", type=['png', 'jpg', 'jpeg'])
 
 def all(image):
-    img = np.asarray(image)
+    # Convert image to RGB to ensure 3 channels
+    image = image.convert("RGB")
+    img = np.array(image)
 
-    img = img / 255.
+    # Normalize
+    img = img / 255.0
 
-    img1 = cv2.resize(img, (256, 256))
+    # Resize using cv2
+    img = cv2.resize(img, (256, 256))
 
-    a = img1.reshape((1, 256, 256, 3))
+    # Reshape
+    img = img.reshape((1, 256, 256, 3))
 
-    maxproba = max(model.predict(a)[0])
+    # Predict
+    pred = model.predict(img)[0]
+    maxproba = np.max(pred)
+    prediction = classnames[np.argmax(pred)].upper()
 
-    answer = classnames[np.argmax(model.predict(a))].upper()
+    if prediction != "NOTUMOR":
+        prediction += " TUMOR"
 
-    if answer != "NOTUMOR":
-        answer = answer + " TUMOR"
-
-
-    return  "THIS IS " +   answer + ", Probability: " + str(np.round(maxproba , 2))
+    return f"🩺 THIS IS {prediction}, Probability: {maxproba:.2f}"
 
 
 if file is None:
-    st.write("Please Upload the MRI Image")
+    st.write("📌 Please upload the MRI image to proceed.")
 else:
     image = Image.open(file)
-    st.image(image , width = 300)
+    st.image(image, width=300, caption="Uploaded MRI Image")
     st.header(all(image))
-
-
-
