@@ -3,6 +3,7 @@ from PIL import Image
 import numpy as np
 import cv2
 from tensorflow.keras.models import load_model
+import webbrowser
 
 # Load model
 model = load_model('BrainTumorClassificationModel.h5')
@@ -43,3 +44,7 @@ else:
     image = Image.open(file)
     st.image(image, width=300, caption="Uploaded MRI Image")
     st.header(all(image))
+
+
+if "__name__" == "__main__":
+    webbrowser.open_new_tab("https://brain-tumor-classification-ouzh.onrender.com/")
